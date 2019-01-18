@@ -40,7 +40,7 @@ class UnPackData:
     def __init__(self):
         self.current_index = 0
         self.result = None
-        self.normal_entity_list = [1000, 1001, 1010, 1999, 5005, 5007, 5009, 1012, 5013, 1021, 4999,1087,1022]
+        self.normal_entity_list = [1000, 1001, 1010, 1999, 1005, 1007, 5009, 1012, 1013, 1021, 4999,1087,2523]
 
     def read_int16(self, data):
         value = struct.unpack("<h", data[0: 2])[0]
@@ -154,16 +154,24 @@ class UnPackData:
                         current_index += 4
 
             elif protocol_num == 1022:  # 通知用户做相应的操作
+                print("1022: %s" % need_parse_data)
                 for i in entity_data:
+                    print("i : %s, %s" % (i, entity_data))
                     if i == "OperateInfo":
                         num = entity_data['OperateNum']
+                        print("num: %s" % num)
                         if num == 0:
                             break
-
                         operate_list = []
                         for j in range(num):
                             operate = self.read_int32(need_parse_data[current_index: (current_index + 4)])
                             current_index += 4
+
+                            size = self.read_int32(need_parse_data[current_index: (current_index + 4)])
+                            current_index += 4
+                            
+                            null_str = self.read_string(size, need_parse_data[current_index: current_index + size])
+                            current_index += size
 
                             operate_list.append(operate)
                         entity_data[i] = operate_list
@@ -175,6 +183,8 @@ class UnPackData:
                         else:
                             size = self.read_int32(need_parse_data[current_index: (current_index + 4)])
                             current_index += 4
+
+                            print("SIZE： %s" % size)
 
                             entity_data[i] = self.read_string(size,
                                                               need_parse_data[current_index: current_index + size])

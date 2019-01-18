@@ -352,14 +352,14 @@ class SCPlayerCanDo:
     def __init__(self):
         self.sc_entity_data = {
             "SeatID": ["INT32", 0],
-            "OperateNum":["INT32", 0],
+            "OperateNum": ["INT32", 0],
             "OperateInfo": ["INT32", -100], # 1 无效  89:过牌 100:出牌 104:取消
-            "OperateSequence":["STRING", ""],
+            "OperateSequence": ["STRING", ""],
             "NotByYao": ["INT32", 0]
         }
 
 
-#   用户请求出牌 --2523 #5023
+#   用户请求出牌 --2523
 class CSPlayerOperate:
     def __init__(self, data={}):
         self.entity = {"protocol_num": ["INT32", 2523], "OperateSequence": ["STRING", ""], "CardNum": ["INT32", 0], "Cards": ["STRING", ""]}

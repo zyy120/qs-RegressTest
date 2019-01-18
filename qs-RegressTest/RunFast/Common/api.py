@@ -353,12 +353,17 @@ class UserBehavior(object):
         return all_card_type
 
     def ReplaceCardValue(self, cards):
+        if type(cards) != list:
+            cards = [cards]
         rep_cards = []
         for r_card in cards:
             if len(r_card) > 1:
                 t_value = r_card[:1]
             else:
                 t_value = r_card
+
+           # print(cards, r_card, t_value)
+
             if t_value == "T":
                 rep_cards.append(10)
             elif t_value == "J":
@@ -824,6 +829,9 @@ class UserBehavior(object):
             else:
                 logging.info("zzzzz")
                 _type = self.GetLastCardType(self.last_player_operate_cards)
+
+                print("上家牌： %s" % self.last_player_operate_cards)
+
                 last_cards = self.ReplaceCardValue(self.last_player_operate_cards)
                 print("_type: %s" % _type)
 
@@ -902,6 +910,7 @@ class UserBehavior(object):
 
     def OnPlayerCanDo(self, data):
         if data['SeatID'] == self.seat_id:
+            print("OnPlayerCanDo: %s" % data)
             logging.info("房间通知: %s 号玩家: %s" % (self.seat_id, data["OperateInfo"]))
             self.current_sequence = data['OperateSequence'][:len(data['OperateSequence']) - 1]
 
