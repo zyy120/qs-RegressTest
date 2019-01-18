@@ -25,8 +25,8 @@ class TestCaseLogin(unittest.TestCase):
         while Round < AutoTestRound:
             room_data = {"GameType": "81", "GameInnings": 6, "GamePaiNum": 16}
             player_A.CreateRoom(room_data)
-           #  if player_A.last_room_id is 0:
-           #      player_A.CreateRoom(room_data)
+            #if player_A.last_room_id is 0:
+            # player_A.CreateRoom(room_data)
             # player_A.room_id = player_A.last_room_id
             print("2222222222", player_A.room_id)
             while player_A.room_id == 0:

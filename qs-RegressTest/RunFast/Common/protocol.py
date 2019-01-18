@@ -161,8 +161,8 @@ class CSCreateRoom():
 class SCCreateRoom():
     def __init__(self):
         self.sc_entity_data = {
+            "Type": ["INT32", 0],
             "ErrorCode": ["INT32", 0],
-            "IsJoinIn": ["INT32", 0],
             "RoomID": ["INT32", 0],
             "RoomType": ["STRING", ""],
             "GameInnings": ["INT32", 0],
@@ -263,11 +263,11 @@ class SCDissolveRoom:
             ]
         }
 
-#   同意解散 --5012
+#   同意解散 --1012
 class CSAgreeDissolve:
     def __init__(self):
         self.cs_club_game_list_data = {
-            "protocol_num": ["INT32", 5012],
+            "protocol_num": ["INT32", 1012],
             "Agree": ["INT32", 1]
         }
         self.cs_keys_list = self.cs_club_game_list_data.keys()
@@ -276,7 +276,7 @@ class CSAgreeDissolve:
         self.real_data = CallUpdateApi(self.cs_club_game_list_data, self.cs_keys_list, self.update_data,
                                        self.method).real_data
 
-#   同意解散回包 --5012
+#   同意解散回包 --1012
 class SCAgreeDissolve:
     def __init__(self):
         self.sc_entity_data = {"ErrorCode": ["INT32", -100]}
