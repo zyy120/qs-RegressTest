@@ -113,7 +113,6 @@ class SCLogin:
 class SCReconnect:
     def __init__(self):
         self.sc_entity_data = {"playType": ["INT32", 0],"RoomID": ["INT32", 0], "SID": ["INT32", -100]}
-
 class SCOffline:
     def __init__(self):
         self.sc_entity_data = {"SeatID": ["INT32", 0]}
@@ -418,7 +417,7 @@ class SCTotalSettlement:
         self.sc_entity_data = {
             "type": ["INT32", -100],
             "RoomOwner": ["INT32", -100],
-            "PlayerCount": ["INT32", 0],
+            "GamePlayers": ["INT32", 0],
             "PlayerInfo": ["INT32",
                            {
                                "SeatID": ["INT32", -100],

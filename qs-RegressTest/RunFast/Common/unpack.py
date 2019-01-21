@@ -22,7 +22,7 @@ class ProtocolClassify:
                                        1005: [SCReadyForGame, "OnReady"],
                                        1007: [SCGameStart, "OnGameStart"],
                                        1008: [SCDissolveRoom, "OnInformDissolveRoom"],
-                                       5009: [SCLeaveRoom, "OnLeaveRoom"],
+                                       1009: [SCLeaveRoom, "OnLeaveRoom"],
                                        1012: [SCAgreeDissolve, "OnVoteDissolveRoom"],
                                        1013: [SCDissolveReason, "OnDissolveReason"],
                                        2520: [SCReceiveCards, "OnRecvCards"],
@@ -40,7 +40,7 @@ class UnPackData:
     def __init__(self):
         self.current_index = 0
         self.result = None
-        self.normal_entity_list = [1000, 1001, 1010, 1999, 1005, 1007, 5009, 1012, 1013, 1021, 4999,1087,2523]
+        self.normal_entity_list = [1000, 1001, 1010, 1999, 1005, 1007, 5009, 1012, 1013, 1021, 4999,1087]
 
     def read_int16(self, data):
         value = struct.unpack("<h", data[0: 2])[0]
@@ -305,7 +305,7 @@ class UnPackData:
                                                               need_parse_data[current_index: current_index + size])
                             current_index += size
 
-            elif protocol_num == 5027:  # 总结算
+            elif protocol_num == 2535:  # 总结算
                 for i in entity_data:
                     if i == "PlayerInfo":
                         num = entity_data['GamePlayers']
