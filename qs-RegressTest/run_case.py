@@ -28,11 +28,11 @@ def format_addr(s):
 
 #发送smtp邮件
 def sendMail(file_new):
-    sender = '13823720073@163.com'
+    sender = '13687097822@163.com'
     # 收件人邮箱，，可设置多个
-    receiver = ['13823720073@163.com', ]  # "wenjianhua@novaszco.com"
+    receiver = ['13687097822@163.com', ]  # "wenjianhua@novaszco.com"
     # 抄送人
-    mailToCc = ['zhaohuabing@lewanhuyu.com']
+    mailToCc = ['zhaoyangyang@lewanhuyu.com']
     subject = '跑胡子自动化测试报告'
     smtpserver = 'smtp.163.com'
     username = '13823720073@163.com'

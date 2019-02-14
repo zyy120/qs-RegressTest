@@ -24,6 +24,7 @@ test_server_base_url = "http://testpay.jiaheyx.com/beard/api/mobile/api.php?api=
 # 余干跑得快本地配置
 
 beard_key="D9%J@#$A$%#@JA&&635"
-SERVER_CONFIG = dict(site_id="2", channel_id="3000", gp_id="102", type="0", deviceid="684E9421-3D86-45A6-A332-CCC905C82A52",
+SERVER_CONFIG = dict(site_id="2", channel_id="3000", gp_id="102", type="0", deviceid="22239421-3D86-45A6-A332-CCC905C82A52",
                      server_ip="192.168.1.27", server_port=9130)
-load_bread_url = "http://127.0.0.1:8080/app/api/"
+load_bread_url = "http://192.168.8.40:8081/yuganapp/api/"
+    #"http://192.168.1.128:8090/yuganapp/api/"

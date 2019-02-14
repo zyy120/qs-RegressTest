@@ -1,8 +1,14 @@
 import os,re,unittest,time,smtplib,subprocess,yaml
+import warnings
 from email.utils import parseaddr, formataddr
 from email.header import Header
 from email.mime.text import MIMEText
-from HTMLTestRunnerEN import *
+
+from sqlalchemy.dialects.mssql import pymssql
+from sqlalchemy.dialects.mysql import pymysql
+
+import HTMLTestRunnerEN
+#from HTMLTestRunnerEN import *
 # import HTMLTestRunnerEN
 from email import encoders
 
@@ -57,7 +63,7 @@ def testSuite(testCaseDir,testCase):
         #discover 方法筛选出来的用例，循环添加到测试套件中
         for test_suit in discover:
             testSuite.addTests(test_suit)
-
+    unittest.TextTestRunner()
     return testSuite
 
 #测试报告生成
