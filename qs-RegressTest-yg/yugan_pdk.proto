@@ -1,0 +1,384 @@
+//登录  1000----begin-----
+message ClientLoginReq 
+{
+	required int32  mid = 1;	             //玩家id
+	optional string no_used = 2;		     //占位
+	optional int32  gp = 3;                  //占位
+	optional int32  game_type = 4;           //占位
+	required int32  resource = 5;      		 //0表示来自lua,1表示来自h5
+}
+
+message ClientLoginAck
+{
+	required int32  err = 1;	             //错无码 0:成功
+}
+//登录  1000----end----
+
+
+//Ack_1999 服务器告知客户端现在是在房间还是在大厅 ----begin-----
+message ClientLoginAck
+{
+	required int32  type = 1;	             //2:跑得快
+	required int32  roomid = 2;	             //0:在大厅，大于0:房间号
+	required int32  server_id = 3;	         //server_id
+}
+//----Ack_1999 end-----
+
+//创建房间 1010-----begin----
+message ClientCreatRoomReq
+{
+	required string type = 1;            	              //房间类型(81:跑得快)
+	required int32  ju = 2;               	              //房间局数(6/8/12/24)
+	required int32  play_type = 3;               	      //玩法类型(15:15张玩法 16:16张玩法)
+	required int32  shouju_guize = 4;          	          //首局规则(0/1)
+	required int32  hei3biCho = 5;          	          //首局黑桃3 是否一手牌必出, 0不需要， 1必出
+	required int32  xianshi_paishu = 6;          	      //是否显示牌数(0/1)
+	required int32  zhaniao = 7;          	      		  //0
+	required int32  zuihou_shaodai = 8;          	      //0
+	required int32  player_count = 9;          	      	  //人数2:2人,3:3人
+	required int32  piaoFen = 10;          	      		  //0
+	required int32  isproxy = 11;          	      		  //0
+	required int32  iJulebu_id = 12;          	      	  //0
+	required int32  aa_kaifang = 13;          	      	  //0
+	required int32  isGaiPai = 14;          	      	  //0
+	optional string club_name = 15;        	              //俱乐部名字""
+	required int32  create_empty_room = 16;          	  //0
+	required int32  password = 17;          	  		  //0
+	required int32  fang_zuobi = 18;          	  		  //0
+	required int32  all_agree_diss = 19;          	      //0
+	required int32  wanfa_index = 20;          	  		  //0
+	required int32  club_pay = 21;          	  		  //0
+	required int32  baodi = 22;          	  		      //0
+	required int32  guanpai = 23;          	  		      //0
+}
+//创建房间 1010-----end----
+
+//创建成功后直接进入房间--消息返回begin------
+//ServerResponseEnterRoom 1001----------begin---
+message ServerResponseEnterRoom
+{
+	required int32 type = 1;            	           //玩法类型(2:表示)
+	required int32 seat_no = 2;            	               //<=0表示错误码，大于0表示座位号
+	required int32 scene_id = 3;            	           //场景id
+	required string scene_type = 4;            	           //场景type
+	required int32 password = 5;            	           //密码
+	required int32 wanfa_index = 6;            	           //玩法index
+	
+}
+//ServerResponseEnterRoom-----------end--
+
+//如果上面ServerResponseEnterRoom的seat_no>0,服务器推送如下消息begin----
+message RoomPlayerInfo
+{
+	required int32 seat_no = 1;            	          	 	//座位号
+	required string ip_addr = 2;            	         	//ip
+	required int32 mid = 3;            	          	 		//玩家id
+	required int32 gp = 4;            	          	 		//gp
+	required int32 sex = 5;            	          	 		//sex
+	required string name = 6;            	         	    //玩家名字
+	required string icon = 7;            	         	    //玩家icon
+	required string city = 8;            	         	    //玩家城市
+	required string json_str = 9;            	         	//json,内包含gps和金币信息
+}
+
+message TablePlayerInfo
+{
+	required int32 seat_no = 1;            	          	 	//座位号
+	required int32 seat_status = 2;            	          	//座位状态
+	required int32 lixian_time = 3;            	          	//离线时间
+	required int64 seat_score_ = 4;            	          	//座位上的分数
+}
+
+//服务器推送玩家快照信息begin--- 1002-----
+message ServerPushPlayersSnapshot
+{
+	required int32 room_owner = 1;            	           //房主
+	required int32 room_state = 2;            	           //房间状态
+	required int32 played_num = 3;            	           //已经打完了几局
+	required int32 total_ju = 4;            	           //总局数
+	required int32 players_num = 5;            	           //房间内的人数
+	repeated RoomPlayerInfo players_info = 6;			   //玩家信息
+	required int32 banker_seatno = 7;            	       //庄家位置
+	required int32 seats_size = 8;            	           //所有座位数
+	required string json_str = 9;            	           //房间信息json
+}
+//服务器推送玩家快照信息end--- 1002-----
+
+
+//服务器推送玩家桌面快照信息begin 1003-----
+message ServerPushTableSnapshot
+{
+	required int32 players_num = 1;            	           //房间内的人数
+	repeated TablePlayerInfo players_info = 2;             //桌子上的玩家信息
+}
+//服务器推送玩家桌面快照信息end 1003-----
+
+//服务器广播玩家进入信息begin 1004-----
+message ServerBroadcastPlayerInfo
+{
+	repeated RoomPlayerInfo players_info = 1;			   //玩家信息
+	required int64 seat_score_ = 2;            	           //玩家座位上的分数
+}
+//服务器广播玩家进入信息end 1004-----
+
+//如果上面ServerResponseEnterRoom的seat_no>0,服务器推送如下消息end----
+//创建成功后直接进入房间--消息返回end------
+
+//玩家请求加入房间----begin 1001------
+message ClientEnterRoomReq
+{
+	required int32 room_id = 1;            	           		//房间id
+	optional int32 version = 2;            	           		//占位，没用
+	optional int32 ip = 3;            	           			//占位，没用
+	optional int32 password = 4;            	           	//密码房用到
+	optional int32 source = 5;            	           		//0:来自app，1:来自h5
+	optional int32 club_pay = 6;            	           	//0 普通 1代开 3俱乐部
+}
+
+//若进入失败 begin 1001----
+message ClientEnterRoomAck
+{
+	required int32 wanfa_type = 1;            	           //玩法类型(1:表示麻将)
+	optional int32 err = 2;            	           		   //错误码
+	optional int32 room_id = 3;            	           	   //房间id
+}
+//若进入失败 end----
+
+//若进入成功 begin----
+
+//ServerPushPlayersSnapshot--
+//ServerPushTableSnapshot---
+//ServerBroadcastPlayerInfo---
+//若进入成功 end----
+
+//玩家请求加入房间----end 1001------
+
+
+//玩家准备-----begin 1005--------
+message ClientReadyReq
+{
+}
+//玩家准备-----end 1005--------
+
+//服务器广播玩家准备信息-----begin 1005--------
+message ServerBroadcastClientReadyInfo
+{
+	required int32 seat_no = 1;            	          	 	//座位号
+}
+//服务器广播玩家准备信息-----end 1005--------
+
+//如果都准备了服务器广播游戏开始
+//服务器广播游戏开始 begin 1007-----
+message ServerBroadCastGameStart
+{
+	required int32 err_no = 1;            	          	 	//错误码
+	required int32 played_num = 2;            	          	//已打完的局数
+}
+//服务器广播游戏开始 end 1007-----
+
+//发牌 begin 2520---------
+message ServerPushCards
+{
+	required int32 cards_num = 1;            	          	 //手牌数
+	repeated string cards = 2;								 //手牌
+}
+//发牌 end 2520---------
+
+//服务器广播下个出牌人begin 1021----------
+message ServerBroadCastNextPlayer
+{
+	required int32 seat_no = 1;            	          	 	 //玩家座位号
+	required int32 op_size = 2;            	          	 	 //玩家当前可操作数
+	repeated int32 op = 3;            	          	 	 	 //玩家当前可操作信息100:出牌 104:取消 106:不出
+}
+//服务器广播下个出牌人end 1021----------
+
+//服务器通知用户做相应的操作begin 1022---
+message ServerNotifyOperate
+{
+	required int32 seat_no = 1;            	          	 	 //出牌的位置
+	required int32 opeate_size = 2;            	          	 //有多少个操作
+	repeated int32 opeate  = 3;								 //操作 100:出牌 104:取消 106:不出
+	required string operation_id  = 4;            	         //操作id
+	required int32 bu_yao_flag = 5;            	          	 //占位，可以不用
+}
+//服务器通知用户做相应的操作end 1022---
+
+
+//玩家出牌请求begin 2523-----
+message ClientPlayReq
+{
+	required string operation_id  = 1;            	         //操作id:ServerNotifyOperate 里的operation_id
+	required int32  played_count = 2;            	         //出牌数
+	repeated string cards  = 3;            	         		 //打出的牌
+}
+//玩家出牌请求end 2523-----
+
+//服务器广播玩家出牌begin 2523-----
+message ServerBroadCastPlayedCard
+{
+	required int32 seat_no = 1;            	          	 	 //出牌的位置
+	required int32 hand_cards_count = 2;            	     //手牌数
+	required int32 played_count  = 3;            	         //出牌数
+	repeated string cards  = 4;            	         		 //打出的牌
+}
+//服务器广播玩家出牌end 2523-----
+
+
+//服务器广播小结算begin 2531-----
+message GameAccountSeatInfo
+{
+	required int32 seat_no = 1;            	          	 	//座位号
+	required int32 mid = 2;            	          	 	    //玩家id
+	required string name = 3;								//玩家名字
+	required string icon = 4;								//玩家icon
+	required int32 oneGame_bomb = 5;            	        //当局炸弹数
+	required int32 game_score = 6;            	        	//当局分数
+	required int32 piao_fen_score = 7;            	        //飘分得分
+	required int32 piao_fen = 8;            	        	//是否飘分
+	required int64 seat_score = 9;            	          	//总分
+	required int32 handcards_size = 10;            	        //手牌数
+	repeated string card = 11;								//手牌
+}
+
+message ServerBroadCastGameAccount
+{
+	required int32 type = 1;            	          	 	 //2:表示跑得快
+	required int32 now_banker_seatno = 2;            	     //当前庄家
+	required int32 left_ju = 3;            	     			 //剩余局数
+	required int32 players_num = 4;            	     		 //人数
+	repeated GameAccountSeatInfo seats_info = 5;			 //小结算座位信息
+	required string room_json_str  = 6;						 //房间json信息
+	required int32 zhuama_seatno  = 7;						 //可以不用
+	required string no_used_str  = 8;						
+	
+}
+//服务器广播小结算end 2531-----
+
+//服务器广播总结算begin 2535----
+message RoomAccountSeatInfo
+{
+	required int32 seat_no = 1;            	          	 	//座位号
+	required int32 mid = 2;            	          	 	    //玩家id
+	required string name = 3;								//玩家名字
+	required string icon = 4;								//玩家icon
+	required int64 seat_score = 5;            	          	//座位分数
+	required int32 bombCount = 6;            	          	//炸弹数
+	required int32 winCount = 7;            	          	//赢的次数
+	required int32 loseCount = 8;            	          	//失败的次数
+	required int32 oneGameMaxScore = 9;            	        //当局最高得分
+	required int32 nSpringCount = 10;            	        //被春天数
+}
+message ServerBroadCastRoomAccount
+{
+	required int32 type = 1;            	          	 	 //2:表示跑得快
+	required int32 room_owner = 2;            	     		 //房主
+	required int32 player_count = 3;            	     	 //玩家数
+	repeated RoomAccountSeatInfo seats_info = 4;			 //座位信息
+	required string json_str  = 5;							 //房间配置信息
+}
+//服务器广播总结算end 2535----
+
+
+//玩家解散房间请求 1008 begin
+message ClientDisbandRoomReq
+{
+}
+//玩家解散房间请求 1008 end
+
+//如果不能解散
+//玩家解散房间Ack 1008 begin
+message ClientDisbandRoomAck
+{
+	required int32 err = 1;            	     		 		//错误码
+}
+//玩家解散房间Ack 1008 end
+
+//如果能解散
+//服务器广播解散信息 1008 begin
+message VoteInfo
+{
+	required int32 seat_no = 1;            	     		 	//座位号
+	required int32 disband_vote = 2;            	     	//投票情况
+}
+message ServerBroadCastDisbandInfo
+{
+	required int32 err = 1;            	     		 		//错误码
+	required int32 disband_author = 2;            	        //发起解散的位置
+	required int32 over_time = 3;            	        	//倒计时
+	required int32 vote_players = 4;            	        //投票人数
+	repeated VoteInfo vote_infos = 5;						//投票信息
+}
+//玩家解散房间Ack 1008 end
+
+//服务器广播房间解散信息1013 begin
+message ServerBroadCastRoomDisBand
+{
+	required int32 scene_id = 1;            	          	 //房间id
+	required string scene_type = 2;							 //房间类型
+	required int32 type = 3;            	          	     //解散类型
+}
+//服务器广播房间解散信息1013 end
+
+//玩家解散房间投票请求begin 1012
+message ClientVoteReq
+{
+	required int32 vote = 1;            	          	 	//1:同意解散
+}
+//玩家解散房间投票请求end 1012
+
+//玩家解散房间投票Ack begin 1012
+message ClientVoteAck
+{
+	required int32 err = 1;            	          	 		//0:投票成功
+}
+//玩家解散房间投票Ack end 1012
+
+//玩家离开房间req begin 1009
+message ClientLeaveRoomReq
+{
+}
+//玩家离开房间req end 1009
+
+//服务器响应玩家离开房间Ack begin 1009
+message ClientLeaveRoomAck
+{
+	required int32 err = 1;            	          	 		//0:成功离开,广播给所有人，否则只发送给自己
+	required int32 seat_no = 2;            	          	 	//座位号
+}
+//服务器响应玩家离开房间Ack end 1009
+
+
+const static std::int32_t ERROR_CODE_ROOM_NOT_ENOUGH = -1100; //房间不足
+const static std::int32_t ERROR_CODE_GOLD_NOT_ENOUGH = -1101; //金币不足
+const static std::int32_t ERROR_CODE_ROOM_NOT_FOUND = -1102; //房间未找到
+const static std::int32_t ERROR_CODE_NOT_HAVE_PROXY= -1103; //未指定代理
+const static std::int32_t ERROR_CODE_PROXY_GOLD_NOT_ENOUGH = -1104; //代理金币不足
+const static std::int32_t ERROR_CODE_ALREADY_IN_ROOM = -1105; //已经在房间中
+
+const static std::int32_t ERROR_CODE_NOT_PARTICIPANT_JULEBU = -1106;  //没有加入俱乐部
+const static std::int32_t ERROR_CODE_NOT_AUTHEN_PROXY = -1107;  //不是代理的授权玩家
+const static std::int32_t ERROR_CODE_JULEBU_GOLD_NOT_ENOUGH = -1108; //俱乐部金币不足
+const static std::int32_t ERROR_CODE_JULEBU_NOT_MATCHTYPE = -1109; //加入的俱乐部类型不匹配
+const static std::int32_t ERROR_CODE_CANNOT_CREATE_EMPTY_ROOM = -1110; //不允许创建俱乐部空房间
+const static std::int32_t ERROR_CODE_NEED_PASSWORD = -1111; //需要密码
+const static std::int32_t ERROR_CODE_INPUT_RIGHT_PASSWORD = -1112; //需要正确的密码
+
+const static std::int32_t ERROR_CODE_NOT_IN_WHITE_LIST = -1113; //未在商务白名单
+const static std::int32_t ERROR_CODE_OTHER_CLUB_ROOM = -1114; //别人的俱乐部房间
+const static std::int32_t ERROR_CODE_REPEAT_IP = -1115; //重复ip
+const static std::int32_t ERROR_CODE_PLAYER_IN_CLUB_BLACK_LIST = -1116; //用户在俱乐部黑名单里面
+const static std::int32_t ERROR_CODE_MAX_CHAGUAN_TABLE_NUM = -1117; //茶馆开房数已达上限
+
+const static std::int32_t ERROR_CODE_CLUB_FROZEN = -1119; //俱乐部冻结
+
+
+
+
+
+
+
+获取房间房间信息接口
+缓存
+
+ key << "RUNFASTROOM|" << roomid;
