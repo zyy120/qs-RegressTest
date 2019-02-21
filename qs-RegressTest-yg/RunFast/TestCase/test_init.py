@@ -51,9 +51,14 @@ class TestCaseLogin(unittest.TestCase):
 
         while not player_A.game_start:
             time.sleep(0.01)
-        player_A.OperateApi("出",  ["8s", "8h", "8c", "4s", "4h", "4c", "5s", "5h", "5c", "6s", "6h", "6c", "7s", "7h", "7c"])
+
+
+        player_A.OperateApi("出", ["8s", "8h", "8c", "4s", "4h", "4c", "5s", "5h", "5c", "6s", "6h", "6c", "7s", "7h", "7c"])
+        time.sleep(1)
         player_B.OperateApi("过")
+        time.sleep(1)
         player_C.OperateApi("过")
+        time.sleep(1)
         player_A.OperateApi("出", ["2s"])
         time.sleep(5)
         # while not player_A.game_start:
