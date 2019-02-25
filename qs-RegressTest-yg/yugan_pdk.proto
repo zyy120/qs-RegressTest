@@ -348,6 +348,11 @@ message ClientLeaveRoomAck
 }
 //服务器响应玩家离开房间Ack end 1009
 
+// 写牌接口 --65534
+message CSMakeCardsType
+{
+    required  String json=""  //牌型 testcard.json里面格式
+}
 
 const static std::int32_t ERROR_CODE_ROOM_NOT_ENOUGH = -1100; //房间不足
 const static std::int32_t ERROR_CODE_GOLD_NOT_ENOUGH = -1101; //金币不足

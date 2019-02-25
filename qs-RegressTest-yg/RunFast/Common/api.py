@@ -212,7 +212,7 @@ class UserBehavior(object):
         # room_data['GameClubID'] = 6721121
         # room_data['GameClubName'] = "自动化测试"
         data = CSCreateRoom(room_data)
-        print(data.real_data)
+        #print(data.real_data)
         self.SendDataToServer(data.real_data)
 
     def OnCreateRoom(self, data):

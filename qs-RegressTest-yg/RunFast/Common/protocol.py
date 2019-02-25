@@ -304,7 +304,7 @@ class CSLeaveRoom:
 class SCLeaveRoom:
     def __init__(self):
         self.sc_entity_data = {"Mid": ["INT32", 00], "SeatID": ["INT32", 99]}
-#写牌
+#写牌 --65534
 class CSMakeCardsType:
     def __init__(self, data):
         #self.cs_make_cards_type_data = {"protocol_num": ["INT32", 32766], "mid": ["INT32", 0], "cards_list": ["STRING", ""]}
